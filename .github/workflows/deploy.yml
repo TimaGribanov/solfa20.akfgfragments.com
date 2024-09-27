@@ -27,6 +27,8 @@ jobs:
               with:
                 local: .
                 remote: ${{ secrets.PATH }}
+                recursive: true
+                verbose: true
                 host: ${{ secrets.IP }}
                 username: ${{ secrets.USER }}
                 privateKey: ${{ secrets.SSH_KEY }}
