@@ -1,0 +1,40 @@
+name: Deploy
+
+concurrency: production
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        name: Build & deploy
+        runs-on: ubuntu-latest
+        environment:
+            name: solfa20.akfgfragments.com
+            url: https://solfa20.akfgfragments.com
+        
+        steps:
+            - name: Chekout the repo
+              uses: actions/checkout@v4
+
+            - name: Show repo contents
+              run: ls -alR
+
+            - name: Copy folder content recursively to remote
+              uses: garygrossgarten/github-action-scp@release
+              with:
+                local: .
+                remote: ${{ secrets.PATH }}
+                host: ${{ secrets.IP }}
+                username: ${{ secrets.USER }}
+                privateKey: ${{ secrets.SSH_KEY }}
+
+            - name: Restart the app on the server
+              uses: garygrossgarten/github-action-ssh@release
+              with:
+                command: cd ${{ secrets.PATH }}; npm i; npm run deploy
+                host: ${{ secrets.IP }}
+                username: ${{ secrets.USER }}
+                privateKey: ${{ secrets.SSH_KEY }}
