@@ -11,32 +11,42 @@ jobs:
     build:
         name: Build & deploy
         runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            node-version: [18.x]
+        env:
+          SSH_KEY: ${{secrets.SSH_KEY}}
+          PATH:  ${{ secrets.PATH }}
+          USER: ${{ secrets.USER }}
+          IP: ${{ secrets.IP }}
         environment:
             name: solfa20.akfgfragments.com
             url: https://solfa20.akfgfragments.com
         
         steps:
             - name: Chekout the repo
-              uses: actions/checkout@v4
+              uses: actions/checkout@master
 
-            - name: Show repo contents
-              run: ls -alR
-
-            - name: Copy folder content recursively to remote
-              uses: garygrossgarten/github-action-scp@release
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v2
               with:
-                local: .
-                remote: ${{ secrets.PATH }}
-                recursive: true
-                verbose: true
-                host: ${{ secrets.IP }}
-                username: ${{ secrets.USER }}
-                privateKey: ${{ secrets.SSH_KEY }}
+                node-version: ${{ matrix.node-version }}
+                cache: "npm"
 
-            - name: Restart the app on the server
-              uses: garygrossgarten/github-action-ssh@release
-              with:
-                command: cd ${{ secrets.PATH }}; npm i; npm run deploy
-                host: ${{ secrets.IP }}
-                username: ${{ secrets.USER }}
-                privateKey: ${{ secrets.SSH_KEY }}
+            - name: Install dependencies
+              run: npm i
+
+            - name: Build
+              run: npm run build
+
+            - run: mkdir ~/.ssh
+
+            - run: echo "$SSH_KEY" >> ~/.ssh/github-action
+            
+            - run: chmod 400 ~/.ssh/github-action
+            
+            - run: echo -e "Host vps\n\tUser $USER\n\tHostname $IP\n\tIdentityFile ~/.ssh/github-action\n\tStrictHostKeyChecking No" >> ~/.ssh/config
+            
+            - run: rsync -re ssh ./.next/ vps:$PATH/.next
+            
+            - run: ssh vps "pm2 restart solfa20"
