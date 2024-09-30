@@ -16,9 +16,6 @@ jobs:
             node-version: [18.x]
         env:
           SSH_KEY: ${{secrets.SSH_KEY}}
-          PATH:  ${{ secrets.PATH }}
-          USER: ${{ secrets.USER }}
-          IP: ${{ secrets.IP }}
         environment:
             name: solfa20.akfgfragments.com
             url: https://solfa20.akfgfragments.com
@@ -45,8 +42,8 @@ jobs:
             
             - run: chmod 400 ~/.ssh/github-action
             
-            - run: echo -e "Host vps\n\tUser $USER\n\tHostname $IP\n\tIdentityFile ~/.ssh/github-action\n\tStrictHostKeyChecking No" >> ~/.ssh/config
+            - run: echo -e "Host vps\n\tUser ${{ secrets.USER }}\n\tHostname ${{ secrets.IP }}\n\tIdentityFile ~/.ssh/github-action\n\tStrictHostKeyChecking No" >> ~/.ssh/config
             
-            - run: rsync -re ssh ./.next/ vps:$PATH/.next
+            - run: rsync -re ssh ./.next/ vps:${{ secrets.PATH }}/.next
             
             - run: ssh vps "pm2 restart solfa20"
