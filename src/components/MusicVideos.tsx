@@ -1,5 +1,5 @@
 import Section from './Section'
-import { forwardRef } from 'react'
+import { ForwardedRef, forwardRef } from 'react'
 
 const AkfgfragmentsVideo = ({ url, title, thumbnail }: { url: string, title: string, thumbnail: string }) => (
     <div className='mv'>
@@ -41,7 +41,7 @@ const Body = () => {
     )
 }
 
-const MusicVideos = forwardRef(function (props, ref) {
+const MusicVideos = forwardRef(function (props, ref: ForwardedRef<HTMLDivElement>) {
     return (
         <div ref={ref}>
             <Section header='Music Videos' body={<Body />} id='music-videos' />
