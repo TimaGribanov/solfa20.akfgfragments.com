@@ -19,24 +19,6 @@ jobs:
       - name: Chekout the repo
         uses: actions/checkout@v4
 
-      - name: Copy package.json to remote
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: package.json
-          remote: ${{ secrets.PATH }}
-          host: ${{ secrets.IP }}
-          username: ${{ secrets.USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
-
-      - name: Copy ecosystem.config.js to remote
-        uses: garygrossgarten/github-action-scp@release
-        with:
-          local: ecosystem.config.js
-          remote: ${{ secrets.PATH }}
-          host: ${{ secrets.IP }}
-          username: ${{ secrets.USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
-
       - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
@@ -65,7 +47,7 @@ jobs:
         id: artifact-upload-step
         with:
           name: solfa20-artifact
-          path: .next/static/
+          path: out/
 
   deploy:
     name: Deploy
@@ -86,36 +68,7 @@ jobs:
         uses: garygrossgarten/github-action-scp@release
         with:
           local: .
-          remote: ${{ secrets.PATH }}/.next/static
+          remote: ${{ secrets.PATH }}
           host: ${{ secrets.IP }}
           username: ${{ secrets.USER }}
           privateKey: ${{ secrets.SSH_KEY }}
-
-  restart:
-    name: Restart service
-    runs-on: ubuntu-latest
-    needs: deploy
-    
-    steps:
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/vps.key
-          chmod 600 ~/.ssh/vps.key
-          cat >>~/.ssh/config <<END
-            Host vps
-            HostName $SSH_HOST
-            User $SSH_USER
-            IdentityFile ~/.ssh/vps.key
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.USER }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-          SSH_HOST: ${{ secrets.IP }}
-
-      - name: Change folder on VCS
-        run: ssh vps "cd ${{ secrets.PATH }}"
-        
-      - name: Restart rm2 service  
-        run: ssh vps "pm2 start ecosystem.config.js"
