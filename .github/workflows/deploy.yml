@@ -16,14 +16,14 @@ jobs:
       - name: Chekout the repo
         uses: actions/checkout@v4
         
-      - name: Load to remote
-        uses: garygrossgarten/github-action-scp@release
+      - name: Copy to remote
+        uses: appleboy/scp-action@v0.1.7
         with:
-          local: .
-          remote: ${{ secrets.PATH }}
           host: ${{ secrets.IP }}
           username: ${{ secrets.USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY }}
+          source: .
+          target: ${{ secrets.PATH }}
   
   build:
     name: Build the code on the server
