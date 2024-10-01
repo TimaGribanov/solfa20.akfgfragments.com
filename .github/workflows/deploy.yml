@@ -36,6 +36,11 @@ jobs:
             - name: Install dependencies
               run: npm i
 
+            - name: Add .env file
+              run: |
+                touch .env
+                echo ${{ secrets.ENV }} > .env
+
             - name: Build
               run: npm run build
 
