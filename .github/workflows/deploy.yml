@@ -8,67 +8,44 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build
+  copy:
+    name: Copy files
     runs-on: ubuntu-latest
-
-    outputs:
-      artifact: ${{ steps.artifact-upload-step.outputs.artifact-id }}
         
     steps:
       - name: Chekout the repo
         uses: actions/checkout@v4
-
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v4
+        
+      - name: Load to remote
+        uses: garygrossgarten/github-action-scp@release
         with:
-          node-version: "18"
-
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json')}}-
-
-      - name: Install dependencies
-        run: npm i
-
-      - name: Build
-        run: npm run build
-        env:
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          URL: ${{ secrets.URL }}
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        id: artifact-upload-step
-        with:
-          name: solfa20-artifact
-          path: out/
-
-  deploy:
-    name: Deploy
-    needs: build
+          local: .
+          remote: ${{ secrets.PATH }}
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USER }}
+          privateKey: ${{ secrets.SSH_KEY }}
+  
+  build:
+    name: Build the code on the server
     runs-on: ubuntu-latest
-      
+
     environment:
       name: solfa20.akfgfragments.com
       url: https://solfa20.akfgfragments.com
 
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
+      - name: Create .env file
+        uses: garygrossgarten/github-action-ssh@release
         with:
-          name: solfa20-artifact
-        
-      - name: Load static pages to remote
-        uses: garygrossgarten/github-action-scp@release
+          command: cd ${{ secrets.PATH }}; touch .env; echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env; echo "URL=${{ secrets.URL }}" >> .env
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USER }}
+          privateKey: ${{ secrets.SSH_KEY }}
+      
+      - name: Build and restart the app on the server
+        uses: garygrossgarten/github-action-ssh@release
         with:
-          local: .
-          remote: ${{ secrets.PATH }}
+          command: cd ${{ secrets.PATH }}; npm i; npm run deploy
           host: ${{ secrets.IP }}
           username: ${{ secrets.USER }}
           privateKey: ${{ secrets.SSH_KEY }}
