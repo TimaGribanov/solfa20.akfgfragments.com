@@ -41,11 +41,11 @@ jobs:
                 touch .env
                 echo ${{ secrets.ENV }} > .env
 
-            - name: Show folder contents
-              run: ls -aR .
-
             - name: Build
               run: npm run build
+              env:
+                MONGODB_URI: ${{ secrets.MONGODB_URI }}
+                URL: ${{ secrets.URL }}
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
