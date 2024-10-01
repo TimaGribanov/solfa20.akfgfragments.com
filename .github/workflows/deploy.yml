@@ -41,6 +41,9 @@ jobs:
                 touch .env
                 echo ${{ secrets.ENV }} > .env
 
+            - name: Show folder contents
+              run: ls -aR .
+
             - name: Build
               run: npm run build
 
