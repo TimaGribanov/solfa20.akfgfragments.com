@@ -1,4 +1,4 @@
-name: Deploy
+name: Build & deploy
 
 concurrency: production
 
@@ -9,26 +9,30 @@ on:
 
 jobs:
     build:
-        name: Build & deploy
+        name: Build
         runs-on: ubuntu-latest
-        strategy:
-          matrix:
-            node-version: [18.x]
-        env:
-          SSH_KEY: ${{secrets.SSH_KEY}}
-        environment:
-            name: solfa20.akfgfragments.com
-            url: https://solfa20.akfgfragments.com
+
+        outputs:
+          artifact: ${{ steps.artifact-upload-step.outputs.artifact-id }}
         
         steps:
             - name: Chekout the repo
               uses: actions/checkout@v4
 
-            - name: Use Node.js ${{ matrix.node-version }}
+            - name: Setup Node.js 18
               uses: actions/setup-node@v4
               with:
-                node-version: ${{ matrix.node-version }}
+                node-version: "18"
                 cache: "npm"
+
+            - name: Restore cache
+              uses: actions/cache@v4
+              with:
+                path: |
+                  .next/cache
+                key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+                restore-keys: |
+                  ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json')}}-
 
             - name: Install dependencies
               run: npm i
@@ -36,14 +40,50 @@ jobs:
             - name: Build
               run: npm run build
 
-            - run: mkdir ~/.ssh
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              id: artifact-upload-step
+              with:
+                name: solfa20-artifact
+                path: .next/static/
 
-            - run: echo "$SSH_KEY" >> ~/.ssh/github-action
-            
-            - run: chmod 400 ~/.ssh/github-action
-            
-            - run: echo -e "Host vps\n\tUser ${{ secrets.USER }}\n\tHostname ${{ secrets.IP }}\n\tIdentityFile ~/.ssh/github-action\n\tStrictHostKeyChecking No" >> ~/.ssh/config
-            
-            - run: rsync -re ssh ./.next/ vps:${{ secrets.PATH }}/.next
-            
-            - run: ssh vps "pm2 restart solfa20"
+    deploy:
+      name: Deploy
+      needs: build
+      runs-on: ubuntu-latest
+      
+      environment:
+        name: solfa20.akfgfragments.com
+        url: https://solfa20.akfgfragments.com
+
+      steps:
+        - name: Load static pages to remote
+          uses: garygrossgarten/github-action-scp@release
+          env:
+            ARTIFACT: ${{ needs.build.outputs.artifact }}
+          with:
+            local: $ARTIFACT
+            remote: ${{ secrets.PATH }}/.next
+            host: ${{ secrets.IP }}
+            username: ${{ secrets.USER }}
+            privateKey: ${{ secrets.SSH_KEY }}
+
+        - name: Configure SSH
+          run: |
+            mkdir -p ~/.ssh
+            echo "$SSH_KEY" > ~/.ssh/vps.key
+            chmod 600 ~/.ssh/vps.key
+            cat >>~/.ssh/config <<END
+              Host vps
+              HostName $SSH_HOST
+              User $SSH_USER
+              IdentityFile ~/.ssh/vps.key
+              StrictHostKeyChecking no
+            END
+          env:
+            SSH_USER: ${{ secrets.USER }}
+            SSH_KEY: ${{ secrets.SSH_KEY }}
+            SSH_HOST: ${{ secrets.IP }}
+        
+        - name: Restart rm2 service  
+          run: ssh vps "pm2 restart solfa20"
