@@ -92,6 +92,37 @@ jobs:
             SSH_USER: ${{ secrets.USER }}
             SSH_KEY: ${{ secrets.SSH_KEY }}
             SSH_HOST: ${{ secrets.IP }}
+
+        - name: Change folder on VCS
+          run: cd ${{ secrets.PATH }}
+
+        - name: Add static package.json
+          run: |
+            touch package.json
+            echo "{
+              "name": "solfa20.akfgfragments.com",
+              "version": "1.0.0",
+              "private": true,
+              "scripts": {
+                "dev": "next dev -p 3010",
+                "build": "next build",
+                "start": "next start -p 3010",
+                "lint": "next lint"
+              }
+            }" > package.json
+            cat package.json
+  
+        - name: Add static ecosystem.config.js
+          run: |
+            touch ecosystem.config.js
+            echo "module.exports = {
+              apps: [{
+                name: 'solfa20',
+                script: 'npm run start',
+                watch: true
+              }]
+            }" > ecosystem.config.js
+            cat ecosystem.config.js
         
         - name: Restart rm2 service  
-          run: ssh vps "pm2 restart solfa20"
+          run: ssh vps "pm2 start ecosystem.config.js"
