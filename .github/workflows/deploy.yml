@@ -35,14 +35,6 @@ jobs:
       url: https://solfa20.akfgfragments.com
 
     steps:
-      - name: Create .env file
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: cd ${{ secrets.PATH }}; touch .env; echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env; echo "URL=${{ secrets.URL }}" >> .env
-          host: ${{ secrets.IP }}
-          username: ${{ secrets.USER }}
-          privateKey: ${{ secrets.SSH_KEY }}
-      
       - name: Build and restart the app on the server
         uses: garygrossgarten/github-action-ssh@release
         with:
