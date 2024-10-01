@@ -9,7 +9,10 @@ const nextConfig = {
         pathname: '/wp-content/uploads/**',
       },
     ],
-  }
+  },
+  experimental: {
+    serverComponentsExternalPackages: ["pino", "pino-pretty"],
+  },
 }
 
 export default nextConfig

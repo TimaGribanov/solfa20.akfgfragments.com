@@ -12,8 +12,7 @@ const TempMessageSchema = new mongoose.Schema<TMessage>({
     },
     message: {
         type: String,
-        required: [true, 'Please provide a text'],
-        maxlength: [500, 'The text cannot be longer than 500 characters']
+        required: [true, 'Please provide a text']
     },
     translation: {
         type: String

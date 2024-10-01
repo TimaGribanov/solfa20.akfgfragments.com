@@ -36,8 +36,11 @@ export const POST = async (req: NextRequest) => {
 
         const response = await newMessage.save()
 
+        console.log(`Response: ${response}`)
+
         return NextResponse.json(response)
     } catch (e) {
+        console.log(e)
         return NextResponse.json({ message: e }, { status: 400 })
     }
 }

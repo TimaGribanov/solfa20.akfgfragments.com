@@ -1,5 +1,8 @@
 'use server'
 import { z } from 'zod'
+import { logger } from '@/lib/logger'
+
+const log = logger.child({ module: "messages-api" })
 
 const formSchema = z.object({
     name: z.string({ required_error: 'Name is required' }).trim(),
@@ -25,6 +28,9 @@ export const sendMessage = async (formData: FormData) => {
         },
         body: JSON.stringify(parsedFormValue.data)
     })
+
+    if (response.status !== 200)
+        log.error(`HTTP status: ${response.status}; HTTP status text: ${response.statusText}; JSON response: ${response.json}`)
 
     return response.status
 }
