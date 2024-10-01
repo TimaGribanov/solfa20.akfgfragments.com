@@ -36,11 +36,6 @@ jobs:
             - name: Install dependencies
               run: npm i
 
-            - name: Add .env file
-              run: |
-                touch .env
-                echo ${{ secrets.ENV }} > .env
-
             - name: Build
               run: npm run build
               env:
@@ -64,13 +59,19 @@ jobs:
         url: https://solfa20.akfgfragments.com
 
       steps:
+        - name: Download artifact
+          uses: actions/download-artifact@v4
+          with:
+            name: solfa20-artifact
+
+        - name: Check current folder
+          run: ls -a
+        
         - name: Load static pages to remote
           uses: garygrossgarten/github-action-scp@release
-          env:
-            ARTIFACT: ${{ needs.build.outputs.artifact }}
           with:
-            local: $ARTIFACT
-            remote: ${{ secrets.PATH }}/.next
+            local: .
+            remote: ${{ secrets.PATH }}/.next/static
             host: ${{ secrets.IP }}
             username: ${{ secrets.USER }}
             privateKey: ${{ secrets.SSH_KEY }}
