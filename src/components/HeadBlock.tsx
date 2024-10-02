@@ -14,7 +14,7 @@ const HeadBlock = () => (
         </picture>
 
         <Container id='intro-text' className='h-100'>
-            <Row className='h-100 align-items-center'>
+            <Row className='h-100 justify-content-center align-items-center'>
                 <Row>
                     <Row className='text-center'>
                         <h1 className='mb-3 d-none d-md-block'>Asian Kung-Fu Generation</h1>

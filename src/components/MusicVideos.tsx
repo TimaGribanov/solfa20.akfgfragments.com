@@ -42,10 +42,12 @@ const Body = () => {
 
 const MusicVideos = forwardRef(function (props, ref: ForwardedRef<HTMLDivElement>) {
     return (
-        <section id='music-videos' className='section mt-5 mb-5' ref={ref}>
-            <h3 className='text-center mb-3'>Music Videos</h3>
-            <Body />
-        </section>
+        <div ref={ref}>
+            <section id='music-videos' className='section'>
+                <h3 className='text-center mb-3'>Music Videos</h3>
+                <Body />
+            </section>
+        </div>
     )
 })
 MusicVideos.displayName = 'Music Videos'
