@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import { TMessage } from './Message'
 
+mongoose.set('sanitizeFilter', true)
+
 const TempMessageSchema = new mongoose.Schema<TMessage>({
     name: {
         type: String,

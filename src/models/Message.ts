@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+mongoose.set('sanitizeFilter', true)
+
 export interface TMessage {
     id: mongoose.Schema.Types.ObjectId,
     name: string,

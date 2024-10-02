@@ -2,6 +2,7 @@
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
+
 const formSchema = z.object({
     name: z.string({ required_error: 'Name is required' }).trim(),
     country: z.string({ required_error: 'Country is required ' }).trim(),
@@ -18,6 +19,9 @@ export const sendMessage = async (formData: FormData) => {
     }
 
     const parsedFormValue = formSchema.safeParse(formDataValues)
+
+    if (!parsedFormValue.success)
+        logger.error(`ERROR on POST /api/messages.\nError: ${parsedFormValue.error}\nBody: ${parsedFormValue.data}`)
 
     logger.info(`POST /api/messages. Body: ${JSON.stringify(parsedFormValue.data)}`)
 
