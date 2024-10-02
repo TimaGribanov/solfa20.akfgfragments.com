@@ -28,8 +28,6 @@ export default function Home() {
         const ctx = gsap.context(() => {
             const videos = gsap.utils.toArray('.mv')
 
-            console.log(videoBlock.current.offsetWidth)
-
             gsap.to(videos, {
                 xPercent: -100 * (videos.length - 1),
                 ease: 'none',

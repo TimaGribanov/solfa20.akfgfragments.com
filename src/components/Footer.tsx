@@ -13,8 +13,8 @@ const Footer = () => (
                     <a href='https://discord.gg/mQJ4TcjM3h'><Discord size={30} /></a>
                 </Stack>
             </Row>
-            <Row className='justify-content-center mt-3'>
-                <p className='mb-0'><a href='https://akfgfragments.com'>akfgfragments</a> © 2024</p>
+            <Row className='mt-3'>
+                <p className='text-center mb-0'><a href='https://akfgfragments.com'>akfgfragments</a> © 2024</p>
             </Row>
         </Container>
     </footer>

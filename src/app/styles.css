@@ -32,12 +32,11 @@ body {
 .mv-container {
     display: flex;
     flex-wrap: wrap;
-    height: 100vh;
+    /* height: fit-content; */
     width: 600vw;
 }
 
 .block {
-    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,7 +44,7 @@ body {
 
 .mv {
     width: 50vw;
-    height: 100vh;
+    /* height: 100vh; */
     position: relative;
     top: 20vh;
     text-align: center;
@@ -54,6 +53,7 @@ body {
 
 .section {
     padding: 0 15%;
+    height: fit-content !important;
 }
 
 .section>h3,
@@ -98,6 +98,11 @@ iframe {
     position: relative;
 }
 
+#intro-img {
+    width: 40% !important;
+    height: auto !important; 
+}
+
 #intro-text {
     position: relative;
 
@@ -105,7 +110,7 @@ iframe {
 }
 
 #intro-text h1 {
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: 700;
     -webkit-text-stroke: 2px var(--bg-colour);
 }
@@ -163,8 +168,13 @@ iframe {
     column-gap: 20px;
 }
 
-#versions {
-    height: fit-content !important;
+#music-videos {
+    height: 100vh !important;
+}
+
+#versions-img {
+    width: 30% !important;
+    height: auto !important;
 }
 
 .version p {
@@ -195,8 +205,18 @@ footer a:active {
 /*=============*/
 
 @media(max-width: 992px) {
+    .section {
+        padding: 0 5%;
+    }
+
     #intro>div {
         height: 50vh;
+    }
+
+    #intro-img,
+    #versions-img {
+        width: 100% !important;
+        height: auto !important;
     }
 
     #tracklist-list {

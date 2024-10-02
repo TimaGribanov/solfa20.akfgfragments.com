@@ -95,10 +95,11 @@ const Body = () => {
         <div className='text-center'>
           <Image
             src={'https://akfgfragments.com/wp-content/uploads/2022/05/2.-Sol-Fa_2016_Reissue.jpg'}
-            width={300}
-            height={300}
+            width={1000}
+            height={1000}
             alt='Sol-Fa (2016) cover art'
             className='rounded float-md-none float-lg-start me-3'
+            id='versions-img'
           />
           <p className='text-start'>In 2016, to celebrate the band&apos;s 20th anniversary Sol-Fa was re-recorded. The resulting album was titled <a href='https://akfgfragments.com/release?Sol-Fa_(2016)'>Sol-Fa (2016)</a>. Apart from all songs having new arrangements and vocals, <a href='https://akfgfragments.com/song?Loop_%26_Loop_(2016)'><em>Loop&Loop</em></a> was moved from the 12th track to the 3rd track. According to Masafumi Gotoh, it was the original plan to put the song at that place, but in the end, they had to put it at the end of the album, hence, in 2016, fixing that.</p>
         </div>

@@ -88,7 +88,7 @@ const MessageForm = () => {
 
     return (
         <Row className="justify-content-center">
-            <Button className='msg-btn w-25' onClick={handleFormView}>
+            <Button className='msg-btn w-50' onClick={handleFormView}>
                 Send your message
             </Button>
             {isFormVisible && FormBlock()}

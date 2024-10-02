@@ -1,4 +1,3 @@
-import Section from './Section'
 import { ForwardedRef, forwardRef } from 'react'
 
 const AkfgfragmentsVideo = ({ url, title, thumbnail }: { url: string, title: string, thumbnail: string }) => (
@@ -43,9 +42,10 @@ const Body = () => {
 
 const MusicVideos = forwardRef(function (props, ref: ForwardedRef<HTMLDivElement>) {
     return (
-        <div ref={ref}>
-            <Section header='Music Videos' body={<Body />} id='music-videos' />
-        </div>
+        <section id='music-videos' className='section mt-5 mb-5' ref={ref}>
+            <h3 className='text-center mb-3'>Music Videos</h3>
+            <Body />
+        </section>
     )
 })
 MusicVideos.displayName = 'Music Videos'

@@ -30,7 +30,7 @@ type RowProps = {
 }
 
 const PrintedRow = (props: RowProps) =>
-    <Row>
+    <Row className='mb-3'>
         <LeftCol week={props.week} copies={props.copies} place={props.place} />
         <RightCol url={props.url} />
     </Row>
@@ -70,7 +70,7 @@ const Body = () => {
     ]
 
     return (
-        <Container className='w-75'>
+        <Container className='w-100'>
             {salesData.map(e => <PrintedRow key={e.week} week={e.week} copies={e.copies} place={e.place} url={e.url} />)}
             <Row>
                 <Col className='text-end'>Total by the end of 2004: 489,711 copies</Col>
