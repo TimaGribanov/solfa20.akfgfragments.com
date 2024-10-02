@@ -1,3 +1,17 @@
-import pino, { Logger } from 'pino'
+import winston from 'winston'
 
-export const logger: Logger = pino({ level: 'error' })
+const { combine, timestamp, json } = winston.format
+
+export const logger = winston.createLogger({
+    level: 'info',
+    format: combine(timestamp(), json()),
+    transports: [
+        new winston.transports.File({
+            filename: 'app.log'
+        }),
+        new winston.transports.File({
+            filename: 'error.log',
+            level: 'error'
+        })
+    ]
+})

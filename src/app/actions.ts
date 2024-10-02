@@ -2,8 +2,6 @@
 import { z } from 'zod'
 import { logger } from '@/lib/logger'
 
-const log = logger.child({ module: "messages-api" })
-
 const formSchema = z.object({
     name: z.string({ required_error: 'Name is required' }).trim(),
     country: z.string({ required_error: 'Country is required ' }).trim(),
@@ -21,6 +19,8 @@ export const sendMessage = async (formData: FormData) => {
 
     const parsedFormValue = formSchema.safeParse(formDataValues)
 
+    logger.info(`POST /api/messages. Body: ${JSON.stringify(parsedFormValue.data)}`)
+
     const response = await fetch(`${process.env.URL}/api/messages`, {
         method: 'POST',
         headers: {
@@ -30,7 +30,7 @@ export const sendMessage = async (formData: FormData) => {
     })
 
     if (response.status !== 200)
-        log.error(`HTTP status: ${response.status}; HTTP status text: ${response.statusText}; JSON response: ${response.json}`)
+        logger.error(`HTTP status: ${response.status}; HTTP status text: ${response.statusText}; JSON response: ${response.json}`)
 
     return response.status
 }

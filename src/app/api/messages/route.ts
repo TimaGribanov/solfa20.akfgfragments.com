@@ -2,6 +2,7 @@ import doConnect from '@/lib/db_client'
 import Temp_Message from '@/models/Temp_Message'
 import Message from '@/models/Message'
 import { NextRequest, NextResponse } from 'next/server'
+import { logger } from '@/lib/logger'
 
 export const GET = async () => {
     try {
@@ -15,8 +16,11 @@ export const GET = async () => {
             return message
         })
 
+        logger.info(`200 GET /api/messages`)
         return NextResponse.json(messages)
     } catch (e) {
+        logger.error(`ERROR on GET /api/messages.\nError message:\n${e}`)
+
         return NextResponse.json(e)
     }
 }
@@ -36,11 +40,8 @@ export const POST = async (req: NextRequest) => {
 
         const response = await newMessage.save()
 
-        console.log(`Response: ${response}`)
-
         return NextResponse.json(response)
     } catch (e) {
-        console.log(e)
         return NextResponse.json({ message: e }, { status: 400 })
     }
 }
