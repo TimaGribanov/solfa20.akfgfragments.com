@@ -1,9 +1,13 @@
-import Image from 'next/image'
 import { Container, Row } from 'react-bootstrap'
 
 const HeadBlock = () => (
     <div id='intro'>
         <picture>
+            <source media='(max-width: 992px)' srcSet='/images/intro-mobile.jpg' />
+            <img src='/images/intro-bg.jpg' alt='Sol-Fa intro image' style={{ marginRight: '50vw', objectFit: 'cover' }}/>
+        </picture>
+        
+        {/* <picture>
             <source media='(max-width: 992px)' srcSet='/images/intro-mobile.jpg' />
             <Image
                 src={'/images/intro-bg.jpg'}
@@ -11,7 +15,7 @@ const HeadBlock = () => (
                 style={{ marginRight: '50vw', objectFit: 'cover' }}
                 fill
             />
-        </picture>
+        </picture> */}
 
         <Container id='intro-text' className='h-100'>
             <Row className='h-100 justify-content-center align-items-center'>
