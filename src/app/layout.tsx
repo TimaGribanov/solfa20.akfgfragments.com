@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import '@/app/styles.css'
 import { notoSans } from '@/ui/fonts'
 
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 const siteUrl = 'https://solfa20.akfgfragments.com'
 
 export const metadata: Metadata = {
@@ -73,7 +75,7 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     ScrollTrigger.refresh()
-    
+
     return (
         <html lang='en'>
             <body className={notoSans.className}>
