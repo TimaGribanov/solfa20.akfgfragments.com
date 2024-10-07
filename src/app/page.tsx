@@ -32,7 +32,7 @@ export default function Home() {
                 xPercent: -100 * (videos.length - 1),
                 ease: 'none',
                 scrollTrigger: {
-                    markers: true,
+                    // markers: true,
                     trigger: videoBlock.current,
                     pin: true,
                     start: 'top top',
