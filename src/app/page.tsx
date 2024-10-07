@@ -46,6 +46,10 @@ export default function Home() {
         return () => ctx.revert()
     }, [])
 
+    window.onload = () => {
+        ScrollTrigger.refresh()
+    }
+
     return (
         <div ref={main}>
             <HeadBlock />
