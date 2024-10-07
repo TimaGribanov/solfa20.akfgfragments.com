@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useLayoutEffect } from 'react'
 import gsap from 'gsap'
 import HeadBlock from '@/components/HeadBlock'
 import Info from '@/components/Info'
@@ -24,7 +24,7 @@ export default function Home() {
     const main = useRef<HTMLElement | any>()
     const videoBlock = useRef<HTMLElement | any>()
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const ctx = gsap.context(() => {
             const videos = gsap.utils.toArray('.mv')
 
@@ -44,7 +44,7 @@ export default function Home() {
         }, main)
 
         return () => ctx.revert()
-    }, [])
+    })
 
     useEffect(() => {
         ScrollTrigger.refresh()
