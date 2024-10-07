@@ -46,9 +46,9 @@ export default function Home() {
         return () => ctx.revert()
     }, [])
 
-    window.onload = () => {
+    useEffect(() => {
         ScrollTrigger.refresh()
-    }
+    }, [])
 
     return (
         <div ref={main}>
