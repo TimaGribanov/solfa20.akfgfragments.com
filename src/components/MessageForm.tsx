@@ -2,7 +2,7 @@
 
 import countries from 'countries-list/minimal/countries.en.min.json'
 
-import { createRef, useState } from 'react'
+import { createRef, useEffect, useState } from 'react'
 
 import { sendMessage } from '@/app/actions'
 
@@ -11,6 +11,8 @@ import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 
 import { FormEvent } from 'react'
+
+import ScrollTrigger from 'gsap/ScrollTrigger'
 
 const ref = createRef<HTMLFormElement>()
 
@@ -81,6 +83,10 @@ const FormBlock = () => (
 
 const MessageForm = () => {
     const [isFormVisible, setIsFormVisible] = useState(false)
+
+    useEffect(() => {
+        ScrollTrigger.refresh()
+    }, [isFormVisible])
 
     const handleFormView = () => {
         setIsFormVisible(!isFormVisible)

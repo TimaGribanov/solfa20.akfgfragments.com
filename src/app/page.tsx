@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { useRef, useLayoutEffect } from 'react'
+import { useRef, useEffect } from 'react'
 import gsap from 'gsap'
 import HeadBlock from '@/components/HeadBlock'
 import Info from '@/components/Info'
@@ -24,7 +24,7 @@ export default function Home() {
     const main = useRef<HTMLElement | any>()
     const videoBlock = useRef<HTMLElement | any>()
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const ctx = gsap.context(() => {
             const videos = gsap.utils.toArray('.mv')
 
@@ -32,6 +32,7 @@ export default function Home() {
                 xPercent: -100 * (videos.length - 1),
                 ease: 'none',
                 scrollTrigger: {
+                    markers: true,
                     trigger: videoBlock.current,
                     pin: true,
                     start: 'top top',
@@ -43,7 +44,7 @@ export default function Home() {
         }, main)
 
         return () => ctx.revert()
-    })
+    }, [])
 
     return (
         <div ref={main}>
