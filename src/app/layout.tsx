@@ -72,6 +72,8 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    ScrollTrigger.refresh()
+    
     return (
         <html lang='en'>
             <body className={notoSans.className}>
