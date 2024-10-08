@@ -28,12 +28,20 @@ const Version = (
 const Body = () => {
   const versionData = [
     {
-      id: 1,
+      id: 0,
       name: 'Regular edition',
       country: 'Japan',
       date: '20 Oct 2004',
       code: 'KSCL-737',
       description: 'The most common version. Contains only a CD with the album.'
+    },
+    {
+      id: 1,
+      name: 'First press',
+      country: 'Japan',
+      date: '20 Oct 2004',
+      code: 'KSCL-737',
+      description: 'This edition differs from the regular edition because it has a cardboard slipcase and a sticker sheet. It was printed in a limited number of copies for the first sales right after the release.'
     },
     {
       id: 2,
