@@ -38,7 +38,8 @@ const MessagesCarousel = ({ messages }: { messages: TMessage[] }) => {
                 touch={true}
                 prevIcon={<PrevIcon />}
                 nextIcon={<NextIcon />}
-                className='w-100'>
+                className='w-100'
+                onSlide={() => {ScrollTrigger.refresh()}}>
                 {messages.map((message: TMessage) => (
                     <Carousel.Item key={message.id.toString()}>
                         <div className='text-center w-75 mx-auto'>
