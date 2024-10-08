@@ -13,6 +13,7 @@ import Carousel from 'react-bootstrap/Carousel'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import { ArrowLeftCircleFill, ArrowRightCircleFill } from 'react-bootstrap-icons'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const MessagesCarousel = ({ messages }: { messages: TMessage[] }) => {
     const PrevIcon = () =>
