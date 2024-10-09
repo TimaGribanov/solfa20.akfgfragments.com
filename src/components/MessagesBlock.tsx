@@ -45,8 +45,8 @@ const MessagesCarousel = ({ messages }: { messages: TMessage[] }) => {
                     <Carousel.Item key={message.id.toString()}>
                         <div className='text-center w-75 mx-auto'>
                             <h5>{message.name} <em>({countries[message.country as keyof typeof countries]})</em></h5>
-                            <p>{message.message}</p>
-                            <p><em>{message.translation}</em></p>
+                            {message.message.split('\r\n\r\n').map((line, index) => <p key={index}>{line}</p>)}
+                            <em>{message.translation.split('\r\n\r\n').map((line, index) => <p key={index}>{line}</p>)}</em>
                         </div>
                     </Carousel.Item>
                 ))}
