@@ -40,10 +40,11 @@ const MessagesCarousel = ({ messages }: { messages: TMessage[] }) => {
                 prevIcon={<PrevIcon />}
                 nextIcon={<NextIcon />}
                 className='w-100'
-                onSlide={() => {ScrollTrigger.refresh()}}>
-                {messages.map((message: TMessage) => (
+                onSlid={() => {ScrollTrigger.refresh()}}>
+                {messages.map((message: TMessage, index: number) => (
                     <Carousel.Item key={message.id.toString()}>
                         <div className='text-center w-75 mx-auto'>
+                            <p>{index + 1}/{messages.length}</p>
                             <h5>{message.name} <em>({countries[message.country as keyof typeof countries]})</em></h5>
                             <p>{message.message}</p>
                             <p><em>{message.translation}</em></p>
